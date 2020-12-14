@@ -1,6 +1,8 @@
 package com.appsdeveloperblog.photoapp.api.users.ui.controllers;
 
- import org.modelmapper.ModelMapper;
+ import javax.servlet.http.HttpServletRequest;
+
+import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -32,9 +34,15 @@ public class UsersController {
 	UsersService usersService;
 
 	@GetMapping("/status/check")
-	public String status()
+	public String status(HttpServletRequest req)
 	{
-		return "Working on port " + env.getProperty("local.server.port") + ", with token = " + env.getProperty("token.secret");
+		String str = "," + req.getPathInfo() + "," + 
+	                 req.getRealPath("/users/") + "," + 
+				     req.getRequestURI() + "," + req.getServletPath() + 
+				     "," + env.getProperty("spring.datasource.url") + 
+				     "," + env.getProperty("spring.datasource.username") + 
+				     "," + env.getProperty("spring.datasource.password");
+		return "Working on port " + env.getProperty("local.server.port") + ", with token = " + env.getProperty("token.secret") + str;
 	}
  
 	@PostMapping(
